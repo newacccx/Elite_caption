@@ -168,7 +168,7 @@ def get_file_quality(caption: str) -> str:
     return ""
 
 def get_file_rip(caption: str) -> str:
-    rip_keywords = ['HDRip', 'HDTC', 'WebRip', 'WEB-DL', 'HD-CAM', 'HDCAM', 'HDTVRip', 'HDTS']
+    rip_keywords = ['HDRip', 'HDTC', 'WebRip', 'WEB-DL', 'HD-CAM', 'HDCAM', 'HDTVRip', 'HDTS', 'CAMRip']
     for rip in rip_keywords:
         if rip.lower() in caption.lower():
             return rip
