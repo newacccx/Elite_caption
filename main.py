@@ -44,26 +44,26 @@ about_message = """
 <b>• Source Code : <a href=https://github.com/PR0FESS0R-99/AutoCaption-Bot>Click Here</a></b>"""
 
 @AutoCaptionBot.on_message(filters.private & filters.command(["start"]))
-def start_command(bot: Client, update: types.Message):
-    update.reply(start_message.format(update.from_user.mention),
-                 reply_markup=start_buttons(bot),
-                 parse_mode=enums.ParseMode.HTML,
-                 disable_web_page_preview=True)
+async def start_command(bot: Client, update: types.Message):
+    await update.reply(start_message.format(update.from_user.mention),
+                       reply_markup=start_buttons(bot),
+                       parse_mode=enums.ParseMode.HTML,
+                       disable_web_page_preview=True)
 
 @AutoCaptionBot.on_callback_query(filters.regex("start"))
-def start_callback(bot: Client, update: types.CallbackQuery):
-    update.message.edit_text(start_message.format(update.from_user.mention),
-                             reply_markup=start_buttons(bot),
-                             parse_mode=enums.ParseMode.HTML,
-                             disable_web_page_preview=True)
+async def start_callback(bot: Client, update: types.CallbackQuery):
+    await update.message.edit_text(start_message.format(update.from_user.mention),
+                                   reply_markup=start_buttons(bot),
+                                   parse_mode=enums.ParseMode.HTML,
+                                   disable_web_page_preview=True)
 
 @AutoCaptionBot.on_callback_query(filters.regex("about"))
-def about_callback(bot: Client, update: types.CallbackQuery):
-    bot_info = bot.get_me()
-    update.message.edit_text(about_message.format(version=Client.__version__, username=bot_info.username),
-                             reply_markup=about_buttons(),
-                             parse_mode=enums.ParseMode.HTML,
-                             disable_web_page_preview=True)
+async def about_callback(bot: Client, update: types.CallbackQuery):
+    bot_info = await bot.get_me()
+    await update.message.edit_text(about_message.format(version=Client.__version__, username=bot_info.username),
+                                   reply_markup=about_buttons(),
+                                   parse_mode=enums.ParseMode.HTML,
+                                   disable_web_page_preview=True)
 
 @AutoCaptionBot.on_message(filters.channel)
 async def edit_caption(bot: Client, update: types.Message):
@@ -102,7 +102,11 @@ def format_file_name(caption: str) -> str:
     match_release_date = re.search(r'\b(19|20)\d{2}\b', caption)
     if match_release_date:
         release_date = match_release_date.group(0)
-        name = caption.split(release_date)[0].strip()
+        match_bracket = re.search(r'\((19|20)\d{2}\)', caption)
+        if match_bracket:
+            name = caption.split(match_bracket.group(0))[0].strip()
+        else:
+            name = caption.split(release_date)[0].strip()
         name = re.sub(r'\s*\([^)]*\)\s*', ' ', name).strip()
         return f"{name} ({release_date})"
     
