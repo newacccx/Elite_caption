@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Fetch environment variables
-app_id = os.getenv("app_id", "6381607")
-api_hash = os.getenv("api_hash","9799ad1623afe9bad664501f984b71fe")
-bot_token = os.getenv("bot_token","5150104558:AAEHw7yPDVeFGtUdrKAnJeiTKuKxYyv1WW4")
+app_id = os.getenv("app_id")
+api_hash = os.getenv("api_hash")
+bot_token = os.getenv("bot_token")
 custom_caption = os.getenv("custom_caption", """Title 🎬: {file_name}
 {series_info}Quality 💿 : {quality} {rip} x264
 Audio 🔊: {language} {sub}
