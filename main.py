@@ -46,14 +46,14 @@ about_message = """
 @AutoCaptionBot.on_message(filters.private & filters.command(["start"]))
 async def start_command(bot: Client, update: types.Message):
     await update.reply(start_message.format(update.from_user.mention),
-                       reply_markup=start_buttons(bot),
+                       reply_markup=await start_buttons(bot),
                        parse_mode=enums.ParseMode.HTML,
                        disable_web_page_preview=True)
 
 @AutoCaptionBot.on_callback_query(filters.regex("start"))
 async def start_callback(bot: Client, update: types.CallbackQuery):
     await update.message.edit_text(start_message.format(update.from_user.mention),
-                                   reply_markup=start_buttons(bot),
+                                   reply_markup=await start_buttons(bot),
                                    parse_mode=enums.ParseMode.HTML,
                                    disable_web_page_preview=True)
 
@@ -188,8 +188,8 @@ def get_file_subtitle(caption: str) -> str:
             return f"({sub})"
     return ""
 
-def start_buttons(bot: Client) -> types.InlineKeyboardMarkup:
-    bot_info = bot.get_me()
+async def start_buttons(bot: Client) -> types.InlineKeyboardMarkup:
+    bot_info = await bot.get_me()  # Await the coroutine
     buttons = [[
         types.InlineKeyboardButton("Updates", url="t.me/Mo_Tech_YT"),
         types.InlineKeyboardButton("About 🤠", callback_data="about")
